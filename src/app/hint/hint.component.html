@@ -1,0 +1,12 @@
+<div (click)="closeHint()">
+    <div [ngClass]="showHint ? 'hintElementPointer' : ''">
+        <ng-content select="[target]"></ng-content>
+    </div>
+    <div class="hintTooltip" [ngStyle]="{ display: showHint ? 'block' : 'none' }">
+        <ng-content select="[hint]"></ng-content>
+
+        <div style="display: flex; justify-content: flex-end;">
+            <span style="font-size: 12px; line-height: 1.2em;">Click anywhere to dismiss</span>
+        </div>
+    </div>
+</div>

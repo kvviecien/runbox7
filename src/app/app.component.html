@@ -8,10 +8,15 @@
     <mat-nav-list dense>      
       <app-sidenav-menu (closeMenu)="sidemenu.close()"></app-sidenav-menu>
 
-      <div id="sidenavGreeting">
-        <p>Good {{timeOfDay}}, {{(rmmapi.me | async)?.user_address}}.</p>
-	<p id="sidenavGreetingContent"><a routerLink="/welcome" class="textLink">Welcome</a> to Runbox 7 (beta)! Please <a href="https://community.runbox.com/" target="forum" class="textLink">visit our forum</a> for help, suggestions, and more information.</p>
-      </div>
+      <app-hint id="welcomeHint">
+          <div target id="sidenavGreeting">
+            <p>Good {{timeOfDay}}, {{(rmmapi.me | async)?.user_address}}.</p>
+        <p id="sidenavGreetingContent"><a routerLink="/welcome" class="textLink">Welcome</a> to Runbox 7 (beta)! Please <a href="https://community.runbox.com/" target="forum" class="textLink">visit our forum</a> for help, suggestions, and more information.</p>
+          </div>
+          <div hint>
+              Did you know we welcome you? We're awesome.
+          </div>
+      </app-hint>
 
       <mat-divider></mat-divider>
 
@@ -68,7 +73,7 @@
     </mat-nav-list>
 
     <mat-nav-list *ngIf="(xapianLoaded | async) && !dataReady && searchService.downloadProgress===null">
-      <mat-list-item (click)="downloadIndexFromServer()" matTooltip="Synchronize index with your device">
+      <mat-list-item id="syncIndexButton" (click)="downloadIndexFromServer()" matTooltip="Synchronize index with your device">
         <mat-icon mat-list-icon>sync</mat-icon>
         <p mat-line>Synchronize index</p>
       </mat-list-item>
@@ -119,6 +124,13 @@
         </app-multiple-search-fields-input>
         <mat-form-field id="searchField" style="flex-grow: 1" floatLabel="auto"
           *ngIf="searchService.downloadProgress===null">
+
+        <app-hint id="searchHint">
+            <div hint>
+                Did you know runbox7 has search? Search rocks.
+            </div>
+            <div target>
+
           <input matInput #searchInputField type="text"
             (focus)="searchTextFieldFocus()"
             (blur)="searchTextFieldBlur()" [placeholder]="dynamicSearchFieldPlaceHolder ? dynamicSearchFieldPlaceHolder: 'Start typing to search messages'"
@@ -127,6 +139,8 @@
               [searchInputField]="searchInputField"
               [currentFolder]="selectedFolder"
               matSuffix matTooltip="Show search options"></app-search-expression-builder> -->
+            </div>
+        </app-hint>
           <button *ngIf="!showMultipleSearchFields"
             mat-icon-button
             matSuffix

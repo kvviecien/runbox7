@@ -24,6 +24,7 @@ import { HttpClientModule, HttpClientJsonpModule, HTTP_INTERCEPTORS } from '@ang
 import { FormsModule } from '@angular/forms';
 import { SentryErrorHandler } from './sentry-error-handler';
 import { AppComponent } from './app.component';
+import { HintModule } from './hint/hint.module';
 import { MenuModule } from './menu/menu.module';
 import { LoginComponent } from './login/login.component';
 
@@ -125,6 +126,7 @@ const routes: Routes = [
     ComposeModule,
     WelcomeDeskModule,
     FolderModule,
+    HintModule,
     MatSnackBarModule,
     MatIconModule,
     MatDialogModule,
