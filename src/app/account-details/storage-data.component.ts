@@ -18,6 +18,11 @@
 // ---------- END RUNBOX LICENSE ----------
 
 import { Component } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { AsyncSubject, Subject } from 'rxjs';
+import { AccountDetailsInterface } from '../rmm/account-details';
+import { Observable } from 'rxjs';
+import { RMM } from '../rmm';
 
 export interface DataUsage {
     type: string;
@@ -26,22 +31,33 @@ export interface DataUsage {
     percentage_used: number;
 }
 
-const USAGE_DATA: DataUsage[] = [
-    { type: 'Mail storage', quota: 0, usage: 0, percentage_used: 0 },
-    { type: 'Files storage', quota: 0, usage: 0, percentage_used: 0 },
-    { type: 'Sent email', quota: 0, usage: 0, percentage_used: 0 },
-    { type: 'Received email', quota: 0, usage: 0, percentage_used: 0 },
-    { type: 'Bandwidth usage', quota: 0, usage: 0, percentage_used: 0 },
-];
-
 @Component({
     selector: 'app-storage-data-component',
     templateUrl: './storage-data.component.html',
     styleUrls: ['account-details.component.scss'],
 })
 export class StorageDataComponent {
+    dataUsage = new AsyncSubject<DataUsage[]>();
     displayedColumns: string[] = ['type', 'quota', 'usage', 'percentage_used'];
-    dataSource = USAGE_DATA;
 
-    constructor() {}
+    constructor(public app: RMM, private http: HttpClient) {
+    }
+
+    ngOnInit() {
+        this.app.account_storage.getUsage().subscribe(dataUsage => {
+            const usageArray = [];
+            Object.keys(dataUsage.result).forEach(key => usageArray.push({
+                type: key,
+                details: dataUsage.result[key]
+            }));
+
+            const usage = usageArray.map(u => {
+                return u;
+            });
+
+            usage.reverse();
+            this.dataUsage.next(usage);
+            this.dataUsage.complete();
+        });
+    }
 }
